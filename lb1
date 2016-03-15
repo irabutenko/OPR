@@ -1,0 +1,88 @@
+// Динамическая загрузка Dll для калькулятора.( Вычитание)
+library Min;
+
+
+uses
+  SysUtils,
+  Classes;
+ function Minus(a,b:real):extended; StdCall;
+begin
+ Result:=a-b;
+end;
+exports Minus;
+{$R *.res}
+
+begin
+end.
+***************Подключение библиотеки
+unit Unit1;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, StdCtrls, ExtCtrls, jpeg, Buttons, Menus,Math;
+
+type TAddIntegers=function(p1,p2:real):extended;
+stdcall;
+type
+  TForm1 = class(TForm)
+    Image1: TImage;
+    Edit1: TEdit;
+    SpeedButton1: TSpeedButton;
+    MainMenu1: TMainMenu;
+    N1: TMenuItem;
+    N3: TMenuItem;
+    N6: TMenuItem;
+    N7: TMenuItem;//........
+    
+    
+    
+  private
+         Summ, Minus, Umno,Delenie: TAddIntegers;
+
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+  
+  
+var
+  Form1: TForm1;
+  q:boolean;
+ s:char;
+   a:real;
+  b:real;
+  c:extended;
+  a1:real;
+  b1:real;
+  s1:string;
+  L:integer;
+  s2:string;
+  s3:string;
+  n,dv_x,dv_y:integer;
+  k,b2:integer;
+  m,m1:real;
+implementation
+
+{$R *.dfm}
+
+procedure TForm1.SpeedButton24Click(Sender: TObject);
+var
+Handle:LongWord; 
+begin 
+try
+if edit1.Text<>'' then b:=strtofloat(edit1.Text);
+case s of
+
+'-': 
+Begin 
+Handle:=LoadLibrary('Min.dll');
+@Minus:=GetProcAddress(Handle, 'Minus');
+c:=Minus(a,b);
+FreeLibrary(Handle);
+end;
+
+//...........
+
+end;
